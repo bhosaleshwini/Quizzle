@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8">
+            <title>Quizzle- Difficult Level</title>
+    </head>
+    <body>
+	<input id="inputAnswerId" name="inputAnswer" value="">
+	</input>
+	<button id="guessButton">Guess</button>
+	
+	<div>
+	    <a id="showGreaterHint" href="#" class="hint-link" data-hint="greater-hint" onClick="return showGreaterHint(event,this)"> Is greater than which number ? </a>
+    </div>
+
+    <div>
+        <a id="showLesserHint" href="#" class="hint-link" data-hint="lesser-hint" onClick="return showLesserHint(event,this)"> Is less than which number ? </a>
+    </div>
+
+    <div>
+        <a id="showOddHint" href="#" class="hint-link" data-hint="odd-hint" onClick="return showOddHint(event,this)">    Is Odd ? </a>
+	</div>
+
+    <div>
+        <a id="showEvenHint" href="#" class="hint-link" data-hint="even-hint" onClick="return showEvenHint(event,this)">   Is Even ? </a>
+    </div>
+	  
+    <div>
+        <a id="showMultiple5Hint"  href="#" class="hint-link" data-hint="multiple-5-hint" onClick="return showMultiple5Hint(event,this)"> Is Multiple of 5 ? </a>
+	</div>
+	  
+    <div>
+        <a id="showMultiple7Hint"  href="#" class="hint-link" data-hint="multiple-7-hint" onClick="return showMultiple7Hint(event,this)"> Is Multiple of 7 ? </a>
+	</div>
+
+    <div>
+        <a id="showPrimeHint"  href="#" class="hint-link" data-hint="prime-hint" onClick="return showPrimeHint(event,this)"> Is Prime ? </a>
+	</div>
+
+    <div>
+        <a id="showUnitHint"  href="#" class="hint-link" data-hint="unit-hint" onClick="return showUnitHint(event,this)"> Is Unit ? </a>
+	</div>
+
+
+	 
+    </body>
+    <script>
+        var key;
+          //keep track of last lesser and greater to narrow the guess range
+        var lastLesser;
+        var lastGreater;
+	    var dmin=0;
+	    var dmax=40;
+	    var score=100;
+		var range=50;
+        var hintsTemplates = {
+           "greater-hint"    : "Is greater than "
+          , "lesser-hint"     : "Is less than "
+          , "odd-hint"        : "Is Odd ?"
+          , "notodd-hint"     :"Is not odd"
+          , "even-hint"       : "Is Even ?"
+          , "noteven-hint"       : "Is not Even "
+
+          , "multiple-5-hint" : "Is Multiple of 5 "
+          , "notmultiple-5-hint" : "Is  Not Multiple of 5 "
+          , "multiple-7-hint" : "Is Multiple of 7 "
+          , "notmultiple-7-hint" : "Is  Not Multiple of 7 "
+          , "prime-hint"        : "Is Prime "
+          , "notprime-hint"        : "Is not Prime "
+          , "unit-hint"        : "Unit Place is "
+
+        };
+	  
+    function initializeGame()
+	    {
+            //initialize guess event handlers
+            var guessButtonElement = document.getElementById("guessButton");
+            guessButtonElement.addEventListener("click",validateAnswer);
+            //initialize the key
+            key = Math.round ( Math.random() * 100 );
+        }
+           //hint specific functions
+    function showGreaterHint(event,element)
+	    {
+
+            var randomKeyToAdd = Math.round ( Math.random() * range );
+            var lesserNumber  = key - randomKeyToAdd;
+            var hint = hintsTemplates["greater-hint"] + lesserNumber;
+            alert(hint);
+     
+     		score=score-10;	
+            range=range+5;			
+        };
+    function showLesserHint(event,element)
+	    {
+
+          var randomKeyToAdd = Math.round ( Math.random() * range);
+          var greaterNumber  = key + randomKeyToAdd;
+          var hint= hintsTemplates["lesser-hint"] + greaterNumber;
+          alert(hint);
+
+  		    score=score-10;
+			range=range+5;
+        };
+
+    function showOddHint(event,element)
+	    {
+            if ((key % 2)!=0)
+            {
+                var hint = hintsTemplates["odd-hint"];
+                alert(hint);
+            }
+            else
+            { 
+                var hint = hintsTemplates["notodd-hint"];
+                alert(hint);          
+            }
+		        score=score-10;
+        };
+    function showEvenHint(event,element)
+	    {
+            if ((key % 2)==0)
+            {
+                var hint = hintsTemplates["even-hint"];
+                alert(hint);
+            }
+            else
+            {
+                var hint = hintsTemplates["noteven-hint"];
+                alert(hint);          
+            }
+		        score=score-10;
+        };
+
+    function showMultiple5Hint(event,element)
+	    {
+            if ((key % 5)==0)
+	        {
+                var hint = hintsTemplates["multiple-5-hint"];
+                alert(hint);
+            }
+            else
+            {
+                var hint = hintsTemplates["notmultiple-5-hint"];
+                alert(hint);          
+            }
+		        score=score-10;
+        };
+
+    function showMultiple7Hint(event,element)
+	    {
+            if ((key % 7)==0)
+            {
+                var hint = hintsTemplates["multiple-7-hint"];
+                alert(hint);
+            }
+            else
+            {
+                var hint = hintsTemplates["notmultiple-7-hint"];
+                alert(hint);          
+            }
+		        score=score-10;
+        };
+
+    function showPrimeHint(event,element){
+    var i;
+	flag=0;
+	    for(i=2;i<key;i++)
+	    {
+	        if(key%i==0)
+		    {
+		        flag=1;
+		        break;
+		    }
+	    }
+	    if(flag==1)
+	    {
+            var hint = hintsTemplates["notprime-hint"];
+            alert(hint); 	 
+	    }
+	    else
+	    {
+	        var hint = hintsTemplates["prime-hint"];
+            alert(hint); 
+	    }
+	        score=score-10;
+    };
+
+	function showUnitHint(event,element){
+        var u=key % 10;
+          
+        var hint = hintsTemplates["unit-hint"]+u;
+        alert(hint);
+          
+		score=score-10;
+	};
+	  
+    	
+	function validateAnswer(event){
+		var inputAnswerElement = document.getElementById("inputAnswerId");
+		var answerInt = parseInt(inputAnswerElement.value);
+		if( key === answerInt ){
+			alert(" You Win :) "+"Score is :"+score);
+		} else {
+			alert(" Try Again :( ");;
+		}
+		    return false;
+	}; 	
+	
+    window.onload = initializeGame;
+  </script>
+</html>
